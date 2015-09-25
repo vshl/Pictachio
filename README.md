@@ -2,8 +2,6 @@
 
 ## About
 
-Class android project for CSC780, SFSU
-
 A gallery app for viewing media (photos and video) on your android device.
 
 ## Wiki
