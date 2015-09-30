@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/item_camera_roll"
+        android:icon="@drawable/ic_action_camera"
+        android:title="@string/camera_roll" />
+    <item
+        android:id="@+id/item_albums"
+        android:icon="@drawable/ic_action_photo_album"
+        android:title="@string/albums" />
+    <item
+        android:id="@+id/item_video"
+        android:icon="@drawable/ic_action_movie"
+        android:title="@string/videos" />
+    </group>
+</menu>
