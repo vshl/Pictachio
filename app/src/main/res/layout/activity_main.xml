@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_action_camera_alt"
+            android:src="@drawable/ic_camera_24dp"
             app:layout_anchor="@id/fragment_frame"
             app:layout_anchorGravity="bottom|right|end"/>
 
