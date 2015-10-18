@@ -24,16 +24,11 @@
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar" />
 
-            <ImageView
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:visibility="invisible"
-                android:id="@+id/imageViewPhoto" />
-
-            <FrameLayout
-                android:id="@+id/fragment_frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_below="@+id/toolbar"/>
 
         </RelativeLayout>
 
@@ -44,7 +39,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:src="@drawable/ic_camera_24dp"
-            app:layout_anchor="@id/fragment_frame"
+            app:layout_anchor="@id/fragment_container"
             app:layout_anchorGravity="bottom|right|end"/>
 
 

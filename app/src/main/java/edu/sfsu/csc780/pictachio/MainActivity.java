@@ -1,9 +1,12 @@
 package edu.sfsu.csc780.pictachio;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -14,15 +17,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+    implements GalleryFragment.OnFragmentInteractionListener
+{
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private ImageView mImageView;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+
     LocalCamera lc = new LocalCamera(this);
 
     @Override
@@ -45,17 +53,21 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.setDrawerListener(drawerToggle);
 
         NavigationView navi = (NavigationView) findViewById(R.id.navi);
-        navi.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        setupDrawerContent(navi);
 
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    default:
-                }
-                drawerLayout.closeDrawers();
-                return true;
+        if (findViewById(R.id.fragment_container) != null) {
+            if (savedInstanceState != null) {
+                return;
             }
-        });
+
+            // Create a new Fragment to be placed in the activity layout
+            GalleryFragment galleryFragment = new GalleryFragment();
+            galleryFragment.setArguments(getIntent().getExtras());
+
+            // Add Fragment to the 'frame_container' FrameLayout
+            getFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, galleryFragment).commit();
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         setBtnListenerOrDisable(
@@ -63,6 +75,42 @@ public class MainActivity extends AppCompatActivity {
                 lc.mTakePhotoOnClickListener,
                 MediaStore.ACTION_IMAGE_CAPTURE
         );
+    }
+
+    private void setupDrawerContent(NavigationView navi) {
+        navi.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                selectDrawerItem(menuItem);
+                return true; 
+            }
+        });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        Fragment fragment = null;
+        Class fragmentClass;
+
+        switch(menuItem.getItemId()) {
+            case R.id.fragment_container:
+                fragmentClass = GalleryFragment.class;
+                break;
+            default:
+                fragmentClass = GalleryFragment.class;
+        }
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
+        menuItem.setChecked(true);
+        setTitle(menuItem.getTitle());
+        drawerLayout.closeDrawers();
     }
 
     @Override
@@ -134,4 +182,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }
