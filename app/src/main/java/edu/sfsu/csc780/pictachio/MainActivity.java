@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -21,9 +20,7 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-    implements GalleryFragment.OnFragmentInteractionListener
-{
+public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -180,10 +177,5 @@ public class MainActivity extends AppCompatActivity
         } else {
             btn.setClickable(false);
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }
