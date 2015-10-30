@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.sfsu.csc780.pictachio" >
 
-    <uses-feature android:name="android.hardware.camera2"
+    <uses-feature
+        android:name="android.hardware.camera2"
         android:required="true" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -20,7 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/title_activity_detail" >
+        </activity>
     </application>
-
 
 </manifest>
