@@ -57,13 +57,19 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
+            CameraRollFragment cameraRollFragment = new CameraRollFragment();
+            cameraRollFragment.setArguments(getIntent().getExtras());
+
+            getFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, cameraRollFragment).commit();
+
             // Create a new Fragment to be placed in the activity layout
-            GalleryFragment galleryFragment = new GalleryFragment();
-            galleryFragment.setArguments(getIntent().getExtras());
+//            GalleryFragment galleryFragment = new GalleryFragment();
+//            galleryFragment.setArguments(getIntent().getExtras());
 
             // Add Fragment to the 'frame_container' FrameLayout
-            getFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, galleryFragment).commit();
+//            getFragmentManager().beginTransaction()
+//                    .add(R.id.fragment_container, galleryFragment).commit();
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -90,11 +96,14 @@ public class MainActivity extends AppCompatActivity {
         Class fragmentClass;
 
         switch(menuItem.getItemId()) {
-            case R.id.fragment_container:
+            case R.id.item_camera_roll:
+                fragmentClass = CameraRollFragment.class;
+                break;
+            case R.id.item_albums:
                 fragmentClass = GalleryFragment.class;
                 break;
             default:
-                fragmentClass = GalleryFragment.class;
+                fragmentClass = CameraRollFragment.class;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
