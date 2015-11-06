@@ -7,16 +7,10 @@
     android:padding="@dimen/tile_padding"
     tools:context="edu.sfsu.csc780.pictachio.CameraRollFragment">
 
-    <ImageView
+    <edu.sfsu.csc780.pictachio.SquaredImageView
         android:id="@+id/imageTile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tile_height"
         android:scaleType="centerCrop" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/tile_height"
-        android:alpha="0.3"
-        android:background="@color/dark_gray" />
 
 </RelativeLayout>

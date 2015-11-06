@@ -2,9 +2,10 @@ package edu.sfsu.csc780.pictachio;
 
 
 import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,12 +13,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.koushikdutta.ion.Ion;
 
 import java.io.File;
+import java.util.ArrayList;
 
 
 /**
@@ -25,7 +27,7 @@ import java.io.File;
  */
 public class CameraRollFragment extends Fragment {
 
-    private MyAdapter mAdapter;
+    ArrayList<String> imageList = new ArrayList<>();
 
     public CameraRollFragment() {
         // Required empty public constructor
@@ -34,6 +36,7 @@ public class CameraRollFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        imageList = loadImages();
     }
 
     @Override
@@ -53,100 +56,90 @@ public class CameraRollFragment extends Fragment {
         return recyclerView;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.fragment_camera_roll, parent, false));
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, DetailActivity.class);
-                    context.startActivity(intent);
-                }
-            });
-        }
-    }
-
     /**
      * Adapter to display recycler view
      */
-    public class ContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        // Set number of Tiles in RecyclerView
-        private static final int LENGTH = 18;
+    public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHolder> {
 
         public ContentAdapter() {
             // no-op
         }
 
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()), parent);
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            private ImageView iv;
+            public ViewHolder(View itemView) {
+                super(itemView);
+
+                iv = (ImageView) itemView.findViewById(R.id.imageTile);
+            }
+
+            public ImageView getIv() {
+                return iv;
+            }
+
+            public void setIv(RelativeLayout.LayoutParams layoutParams) {
+                iv.setLayoutParams(layoutParams);
+            }
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater
+                    .from(parent.getContext())
+                    .inflate(R.layout.fragment_camera_roll, parent, false);
+            return new ViewHolder(itemView);
         }
 
         @Override
-        public int getItemCount() {
-            return LENGTH;
-        }
+        public void onBindViewHolder(ViewHolder holder, int position) {
 
-    }
+            File imageFile = new File(imageList.get(position));
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), bmOptions);
+            bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
 
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    bitmap.getWidth(), bitmap.getHeight());
+            holder.setIv(layoutParams);
 
-    private class MyAdapter extends ArrayAdapter<String> {
-        public MyAdapter(Context context) {
-            super(context, 0);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (position > getCount() - 4)
-                loadMore();
-
-            if (convertView == null)
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.fragment_camera_roll, null);
-
-            final ImageView iv = (ImageView) convertView.findViewById(R.id.imageTile);
-
-            Ion.with(iv)
+            Ion.with(holder.getIv())
                     .centerCrop()
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.error)
-                    .load(getItem(position));
-
-            return convertView;
+                    .load(imageList.get(position));
         }
+
+
+        @Override
+        public int getItemCount() {
+            return imageList.size();
+        }
+
     }
 
-    Cursor mediaCursor;
-    private void loadMore() {
-        if (mediaCursor == null) {
-            mediaCursor = getActivity().getContentResolver().query(MediaStore.Files.getContentUri("external"), null, null, null, null);
-        }
+    private ArrayList<String> loadImages() {
+        Cursor cursor;
+        ArrayList<String> imagePaths = new ArrayList<>();
+        Uri queryUri = MediaStore.Files.getContentUri("external");
+
+        cursor = getActivity().getContentResolver().query(queryUri, null, null, null, null);
 
         int loaded = 0;
-        assert mediaCursor != null;
-        while (mediaCursor.moveToNext() && loaded < 10) {
-            // get the media type. ion can show images for both regular images AND video.
-            int mediaType = mediaCursor.getInt(mediaCursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE));
+        while ((cursor != null && cursor.moveToNext()) && loaded < 10) {
+            int mediaType = cursor.getInt(cursor.getColumnIndex(
+                    MediaStore.Files.FileColumns.MEDIA_TYPE));
             if (mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
-                    && mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+                    && mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
                 continue;
-            }
-
             loaded++;
 
-            String uri = mediaCursor.getString(mediaCursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
-            File file = new File(uri);
-            // turn this into a file uri if necessary/possible
-            if (file.exists())
-                mAdapter.add(file.toURI().toString());
-            else
-                mAdapter.add(uri);
+            String path = cursor.getString(
+                    cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+            imagePaths.add(path);
         }
+        if (cursor != null)
+            cursor.close();
 
+        return imagePaths;
     }
 }
