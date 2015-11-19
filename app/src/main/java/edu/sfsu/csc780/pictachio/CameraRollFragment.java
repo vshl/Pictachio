@@ -2,6 +2,7 @@ package edu.sfsu.csc780.pictachio;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.koushikdutta.ion.Ion;
 
@@ -56,67 +58,6 @@ public class CameraRollFragment extends Fragment {
         return recyclerView;
     }
 
-    /**
-     * Adapter to display recycler view
-     */
-    public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHolder> {
-
-        public ContentAdapter() {
-            // no-op
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            private ImageView iv;
-            public ViewHolder(View itemView) {
-                super(itemView);
-
-                iv = (ImageView) itemView.findViewById(R.id.imageTile);
-            }
-
-            public ImageView getIv() {
-                return iv;
-            }
-
-            public void setIv(RelativeLayout.LayoutParams layoutParams) {
-                iv.setLayoutParams(layoutParams);
-            }
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater
-                    .from(parent.getContext())
-                    .inflate(R.layout.fragment_camera_roll, parent, false);
-            return new ViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-
-            File imageFile = new File(imageList.get(position));
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), bmOptions);
-            bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
-
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    bitmap.getWidth(), bitmap.getHeight());
-            holder.setIv(layoutParams);
-
-            Ion.with(holder.getIv())
-                    .centerCrop()
-                    .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.error)
-                    .load(imageList.get(position));
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return imageList.size();
-        }
-
-    }
-
     private ArrayList<String> loadImages() {
         Cursor cursor;
         ArrayList<String> imagePaths = new ArrayList<>();
@@ -141,5 +82,78 @@ public class CameraRollFragment extends Fragment {
             cursor.close();
 
         return imagePaths;
+    }
+
+    /**
+     * Adapter to display recycler view
+     */
+    public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHolder> {
+
+        public ContentAdapter() {
+            // no-op
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            Context context = parent.getContext();
+            View itemView = LayoutInflater
+                    .from(context)
+                    .inflate(R.layout.fragment_camera_roll, parent, false);
+            return new ViewHolder(context, itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+
+            File imageFile = new File(imageList.get(position));
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), bmOptions);
+            bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    bitmap.getWidth(), bitmap.getHeight());
+            holder.setIv(layoutParams);
+
+            Ion.with(holder.getIv())
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.error)
+                    .load(imageList.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return imageList.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            private ImageView iv;
+            private Context context;
+
+            public ViewHolder(Context context, View itemView) {
+                super(itemView);
+
+                this.iv = (ImageView) itemView.findViewById(R.id.imageTile);
+                this.context = context;
+                itemView.setOnClickListener(this);
+            }
+
+            public ImageView getIv() {
+                return iv;
+            }
+
+            public void setIv(RelativeLayout.LayoutParams layoutParams) {
+                iv.setLayoutParams(layoutParams);
+            }
+
+            @Override
+            public void onClick(View v) {
+                int position = getLayoutPosition();
+                File imageFile = new File(imageList.get(position));
+                Toast.makeText(context, imageFile.getPath(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
     }
 }
