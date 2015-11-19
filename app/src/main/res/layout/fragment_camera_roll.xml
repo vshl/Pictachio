@@ -11,6 +11,7 @@
         android:id="@+id/imageTile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tile_height"
-        android:scaleType="centerCrop" />
+        android:background="?android:attr/selectableItemBackground"
+        android:scaleType="centerCrop"/>
 
 </RelativeLayout>
