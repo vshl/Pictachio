@@ -3,6 +3,7 @@ package edu.sfsu.csc780.pictachio;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.koushikdutta.ion.Ion;
 
@@ -150,7 +150,11 @@ public class CameraRollFragment extends Fragment {
             public void onClick(View v) {
                 int position = getLayoutPosition();
                 File imageFile = new File(imageList.get(position));
-                Toast.makeText(context, imageFile.getPath(), Toast.LENGTH_SHORT).show();
+                Uri uri = Uri.fromFile(imageFile);
+
+                Intent intent = new Intent(context, DetailActivity.class);
+                intent.putExtra("image", uri.toString());
+                context.startActivity(intent);
             }
         }
 
