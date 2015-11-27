@@ -161,6 +161,10 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            CameraRollFragment cameraRollFragment = (CameraRollFragment)
+                    getFragmentManager().findFragmentById(R.id.fragment_container);
+            if (cameraRollFragment != null)
+                cameraRollFragment.updateAdapter();
             return true;
         }
 
