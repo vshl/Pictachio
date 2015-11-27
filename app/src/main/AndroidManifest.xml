@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.sfsu.csc780.pictachio" >
+<manifest
+    package="edu.sfsu.csc780.pictachio"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-feature
         android:name="android.hardware.camera2"
@@ -24,7 +25,8 @@
         </activity>
         <activity
             android:name=".DetailActivity"
-            android:label="@string/title_activity_detail" >
+            android:label="@string/title_activity_detail"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
         </activity>
     </application>
 
