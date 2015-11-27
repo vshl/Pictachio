@@ -22,13 +22,33 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    LocalCamera lc = new LocalCamera(this);
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private ImageView mImageView;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    LocalCamera lc = new LocalCamera(this);
+    /**
+     * Indicates whether the specified action can be used as an intent. This
+     * method queries the package manager for installed packages that can
+     * respond to an intent with the specified action. If no suitable package is
+     * found, this method returns false.
+     * http://android-developers.blogspot.com/2009/01/can-i-use-this-intent.html
+     *
+     * @param context The application's environment.
+     * @param action  The Intent action to check for availability.
+     * @return True if an Intent with the specified action can be sent and
+     * responded to, false otherwise.
+     */
+    public static boolean isIntentAvailable(Context context, String action) {
+        final PackageManager packageManager = context.getPackageManager();
+        final Intent intent = new Intent(action);
+        List<ResolveInfo> list =
+                packageManager.queryIntentActivities(intent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +83,6 @@ public class MainActivity extends AppCompatActivity {
             getFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, cameraRollFragment).commit();
 
-            // Create a new Fragment to be placed in the activity layout
-//            GalleryFragment galleryFragment = new GalleryFragment();
-//            galleryFragment.setArguments(getIntent().getExtras());
-
-            // Add Fragment to the 'frame_container' FrameLayout
-//            getFragmentManager().beginTransaction()
-//                    .add(R.id.fragment_container, galleryFragment).commit();
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -86,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 selectDrawerItem(menuItem);
-                return true; 
+                return true;
             }
         });
     }
@@ -123,6 +136,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             lc.handleCameraPhoto();
+            CameraRollFragment cameraRollFragment = (CameraRollFragment)
+                    getFragmentManager().findFragmentById(R.id.fragment_container);
+
+            if (cameraRollFragment != null) {
+                cameraRollFragment.updateAdapter();
+            }
         }
     }
 
@@ -153,27 +172,6 @@ public class MainActivity extends AppCompatActivity {
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
-    }
-    /**
-     * Indicates whether the specified action can be used as an intent. This
-     * method queries the package manager for installed packages that can
-     * respond to an intent with the specified action. If no suitable package is
-     * found, this method returns false.
-     * http://android-developers.blogspot.com/2009/01/can-i-use-this-intent.html
-     *
-     * @param context The application's environment.
-     * @param action The Intent action to check for availability.
-     *
-     * @return True if an Intent with the specified action can be sent and
-     *         responded to, false otherwise.
-     */
-    public static boolean isIntentAvailable(Context context, String action) {
-        final PackageManager packageManager = context.getPackageManager();
-        final Intent intent = new Intent(action);
-        List<ResolveInfo> list =
-                packageManager.queryIntentActivities(intent,
-                        PackageManager.MATCH_DEFAULT_ONLY);
-        return list.size() > 0;
     }
 
     private void setBtnListenerOrDisable(

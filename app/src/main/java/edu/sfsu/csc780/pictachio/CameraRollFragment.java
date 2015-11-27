@@ -30,6 +30,7 @@ import java.util.ArrayList;
 public class CameraRollFragment extends Fragment {
 
     ArrayList<String> imageList = new ArrayList<>();
+    ContentAdapter adapter = new ContentAdapter();
 
     public CameraRollFragment() {
         // Required empty public constructor
@@ -42,12 +43,19 @@ public class CameraRollFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        imageList = loadImages();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         RecyclerView recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.recycler_view, container, false);
-        ContentAdapter adapter = new ContentAdapter();
+//        ContentAdapter adapter = new ContentAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         // Set padding for Tiles
@@ -82,6 +90,14 @@ public class CameraRollFragment extends Fragment {
             cursor.close();
 
         return imagePaths;
+    }
+
+    /**
+     * Method to update the RecyclerView adapter
+     */
+    public void updateAdapter() {
+        imageList = loadImages();
+        adapter.notifyDataSetChanged();
     }
 
     /**
