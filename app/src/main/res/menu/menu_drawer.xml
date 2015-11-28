@@ -10,7 +10,7 @@
         android:icon="@drawable/ic_photo_album_24dp"
         android:title="@string/all_photos"/>
     <item
-        android:id="@+id/item_video"
+        android:id="@+id/item_videos"
         android:icon="@drawable/ic_videocam_24dp"
         android:title="@string/videos" />
     </group>
