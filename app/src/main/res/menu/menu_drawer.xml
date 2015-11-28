@@ -6,9 +6,9 @@
         android:icon="@drawable/ic_camera_24dp"
         android:title="@string/camera_roll" />
     <item
-        android:id="@+id/item_albums"
+        android:id="@+id/item_all_photos"
         android:icon="@drawable/ic_photo_album_24dp"
-        android:title="@string/albums" />
+        android:title="@string/all_photos"/>
     <item
         android:id="@+id/item_video"
         android:icon="@drawable/ic_videocam_24dp"

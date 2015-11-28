@@ -27,12 +27,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CameraRollFragment extends Fragment {
+public class AllPhotosFragment extends Fragment {
 
     ArrayList<String> imageList = new ArrayList<>();
     ContentAdapter adapter = new ContentAdapter();
 
-    public CameraRollFragment() {
+    public AllPhotosFragment() {
         // Required empty public constructor
     }
 
@@ -70,11 +70,7 @@ public class CameraRollFragment extends Fragment {
         ArrayList<String> imagePaths = new ArrayList<>();
         Uri queryUri = MediaStore.Files.getContentUri("external");
 
-        cursor = getActivity().getContentResolver().query(queryUri,
-                null,
-                MediaStore.Images.Media.DATA + " like ? ",
-                new String[]{"%DCIM/Camera%"},
-                null);
+        cursor = getActivity().getContentResolver().query(queryUri, null, null, null, null);
 
         int loaded = 0;
         while ((cursor != null && cursor.moveToNext()) && loaded < 10) {

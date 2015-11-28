@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.item_camera_roll:
                 fragmentClass = CameraRollFragment.class;
                 break;
-            case R.id.item_albums:
-                fragmentClass = GalleryFragment.class;
+            case R.id.item_all_photos:
+                fragmentClass = AllPhotosFragment.class;
                 break;
             default:
                 fragmentClass = CameraRollFragment.class;
