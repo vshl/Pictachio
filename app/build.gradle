@@ -26,6 +26,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.koushikdutta.ion:ion:2.1.6'
     compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.commit451:PhotoView:1.2.4'
+    compile 'com.android.support:mediarouter-v7:23.1.1'
+    compile 'com.google.android.gms:play-services:8.3.0'
 }

@@ -10,13 +10,20 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.MediaRouteActionProvider;
+import android.support.v7.media.MediaRouteSelector;
+import android.support.v7.media.MediaRouter;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.cast.CastDevice;
+import com.google.android.gms.cast.CastMediaControlIntent;
 
 import java.util.List;
 
@@ -24,10 +31,14 @@ public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     LocalCamera lc = new LocalCamera(this);
+    String APP_ID = "75DEBF1E";
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private ImageView mImageView;
+    private MediaRouter mMediaRouter;
+    private MediaRouteSelector mSelector;
+    private MediaRouter.Callback mMediaRouterCallback;
+    private CastDevice mSelectedDevice;
 
     /**
      * Indicates whether the specified action can be used as an intent. This
@@ -48,6 +59,19 @@ public class MainActivity extends AppCompatActivity {
                 packageManager.queryIntentActivities(intent,
                         PackageManager.MATCH_DEFAULT_ONLY);
         return list.size() > 0;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMediaRouter.addCallback(mSelector, mMediaRouterCallback,
+                MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+    }
+
+    @Override
+    protected void onPause() {
+        mMediaRouter.removeCallback(mMediaRouterCallback);
+        super.onPause();
     }
 
     @Override
@@ -91,6 +115,15 @@ public class MainActivity extends AppCompatActivity {
                 lc.mTakePhotoOnClickListener,
                 MediaStore.ACTION_IMAGE_CAPTURE
         );
+
+        mMediaRouter = MediaRouter.getInstance(getApplicationContext());
+        mSelector = new MediaRouteSelector.Builder()
+                .addControlCategory(CastMediaControlIntent.categoryForCast(
+                        CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID))
+                .build();
+
+        mMediaRouterCallback = new MyMediaRouterCallback();
+
     }
 
     private void setupDrawerContent(NavigationView navi) {
@@ -152,6 +185,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        // Attach the MediaRouteSelector to the menu item
+        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        MediaRouteActionProvider mediaRouteActionProvider =
+                (MediaRouteActionProvider) MenuItemCompat.getActionProvider(
+                        mediaRouteMenuItem);
+        mediaRouteActionProvider.setRouteSelector(mSelector);
         return true;
     }
 
@@ -190,6 +230,21 @@ public class MainActivity extends AppCompatActivity {
             btn.setOnClickListener(onClickListener);
         } else {
             btn.setClickable(false);
+        }
+    }
+
+    private class MyMediaRouterCallback extends MediaRouter.Callback {
+        @Override
+        public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo route) {
+            // Handle route selection
+            mSelectedDevice = CastDevice.getFromBundle(route.getExtras());
+
+            Toast.makeText(MainActivity.this, "Casting", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo route) {
+            mSelectedDevice = null;
         }
     }
 }
