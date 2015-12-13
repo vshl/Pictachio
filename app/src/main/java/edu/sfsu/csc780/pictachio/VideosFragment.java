@@ -43,8 +43,7 @@ public class VideosFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        imageList = loadImages();
-        adapter.notifyDataSetChanged();
+        updateAdapter();
     }
 
     @Override
@@ -118,16 +117,6 @@ public class VideosFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-//
-//            File imageFile = new File(imageList.get(position));
-//            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), bmOptions);
-//            bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
-//
-//            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-//                    bitmap.getWidth(), bitmap.getHeight());
-//            holder.setIv(layoutParams);
-
             Ion.with(holder.getIv())
                     .centerCrop()
                     .placeholder(R.drawable.placeholder)

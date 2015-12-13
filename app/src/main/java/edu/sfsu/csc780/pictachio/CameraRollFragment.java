@@ -45,8 +45,7 @@ public class CameraRollFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        imageList = loadImages();
-        adapter.notifyDataSetChanged();
+        updateAdapter();
     }
 
     @Override
