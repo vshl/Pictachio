@@ -1,4 +1,4 @@
-package edu.sfsu.csc780.pictachio;
+package edu.sfsu.csc780.pictachio.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -18,6 +18,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.List;
+
+import edu.sfsu.csc780.pictachio.R;
+import edu.sfsu.csc780.pictachio.fragments.AllPhotosFragment;
+import edu.sfsu.csc780.pictachio.fragments.CameraRollFragment;
+import edu.sfsu.csc780.pictachio.fragments.VideosFragment;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package edu.sfsu.csc780.pictachio;
+package edu.sfsu.csc780.pictachio.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,13 +19,27 @@ import java.util.Date;
 import java.util.Locale;
 
 public class LocalCamera {
+    static final int REQUEST_TAKE_PHOTO = 1;
     private Activity activity;
     private String mCurrentPhotoPath;
-    static final int REQUEST_TAKE_PHOTO = 1;
+    Button.OnClickListener mTakePhotoOnClickListener =
+            new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isExternalStorageWritable()) {
+                        dispatchTakePictureIntent();
+                    }
+                }
+            };
     private ImageView mImageView;
 
     LocalCamera(Activity activity) {
         this.activity = activity;
+    }
+
+    public static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     private File createImageFile() throws IOException {
@@ -45,11 +59,6 @@ public class LocalCamera {
         // Save a file: path for use with ACTION_VIEW  intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
-    }
-
-    public static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     private void dispatchTakePictureIntent() {
@@ -115,16 +124,6 @@ public class LocalCamera {
             mCurrentPhotoPath = null;
         }
     }
-
-    Button.OnClickListener mTakePhotoOnClickListener =
-            new Button.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isExternalStorageWritable()) {
-                        dispatchTakePictureIntent();
-                    }
-                }
-            };
 
 
 }

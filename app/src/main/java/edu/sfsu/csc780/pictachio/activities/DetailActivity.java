@@ -1,4 +1,4 @@
-package edu.sfsu.csc780.pictachio;
+package edu.sfsu.csc780.pictachio.activities;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -8,6 +8,7 @@ import android.widget.VideoView;
 
 import com.koushikdutta.ion.Ion;
 
+import edu.sfsu.csc780.pictachio.R;
 import uk.co.senab.photoview.PhotoView;
 
 public class DetailActivity extends Activity {

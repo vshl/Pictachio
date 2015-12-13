@@ -1,13 +1,13 @@
 <!-- Drawer -->
 <android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/main_content"
@@ -47,8 +47,8 @@
                     android:layout_gravity="bottom|end"
                     android:layout_margin="16dp"
                     android:src="@drawable/ic_camera_24dp"
-                    app:fabSize="normal"
                     app:elevation="6dp"
+                    app:fabSize="normal"
                     app:layout_anchor="@id/fragment_container"
                     app:layout_anchorGravity="bottom|right|end"
                     app:layout_behavior="edu.sfsu.csc780.pictachio.ScrollAwareFABBehavior"/>
@@ -62,10 +62,10 @@
     <!-- Navigation bar -->
     <android.support.design.widget.NavigationView
         android:id="@+id/navi"
+        elevation="15dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        elevation="15dp"
         app:headerLayout="@layout/navbar_header"
         app:menu="@menu/menu_drawer" />
 

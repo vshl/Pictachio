@@ -1,4 +1,4 @@
-package edu.sfsu.csc780.pictachio;
+package edu.sfsu.csc780.pictachio.utils;
 
 import android.content.Context;
 import android.util.AttributeSet;

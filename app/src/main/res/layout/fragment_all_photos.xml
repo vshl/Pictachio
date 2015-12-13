@@ -5,9 +5,9 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:orientation="vertical"
                 android:padding="@dimen/tile_padding"
-                tools:context="edu.sfsu.csc780.pictachio.CameraRollFragment">
+                tools:context=".fragments.AllPhotosFragment">
 
-    <edu.sfsu.csc780.pictachio.SquaredImageView
+    <edu.sfsu.csc780.pictachio.utils.SquaredImageView
         android:id="@+id/imageTile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tile_height"

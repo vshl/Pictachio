@@ -1,4 +1,4 @@
-package edu.sfsu.csc780.pictachio;
+package edu.sfsu.csc780.pictachio.fragments;
 
 
 import android.app.Fragment;
@@ -23,16 +23,19 @@ import com.koushikdutta.ion.Ion;
 import java.io.File;
 import java.util.ArrayList;
 
+import edu.sfsu.csc780.pictachio.R;
+import edu.sfsu.csc780.pictachio.activities.DetailActivity;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AllPhotosFragment extends Fragment {
+public class CameraRollFragment extends Fragment {
 
     ArrayList<String> imageList = new ArrayList<>();
     ContentAdapter adapter = new ContentAdapter();
 
-    public AllPhotosFragment() {
+    public CameraRollFragment() {
         // Required empty public constructor
     }
 
@@ -69,7 +72,11 @@ public class AllPhotosFragment extends Fragment {
         ArrayList<String> imagePaths = new ArrayList<>();
         Uri queryUri = MediaStore.Files.getContentUri("external");
 
-        cursor = getActivity().getContentResolver().query(queryUri, null, null, null, null);
+        cursor = getActivity().getContentResolver().query(queryUri,
+                null,
+                MediaStore.Images.Media.DATA + " like ? ",
+                new String[]{"%DCIM/Camera%"},
+                null);
 
         int loaded = 0;
         while ((cursor != null && cursor.moveToNext()) && loaded < 10) {

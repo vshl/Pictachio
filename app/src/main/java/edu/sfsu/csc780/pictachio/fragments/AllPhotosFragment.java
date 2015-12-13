@@ -1,10 +1,12 @@
-package edu.sfsu.csc780.pictachio;
+package edu.sfsu.csc780.pictachio.fragments;
 
 
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,16 +23,19 @@ import com.koushikdutta.ion.Ion;
 import java.io.File;
 import java.util.ArrayList;
 
+import edu.sfsu.csc780.pictachio.R;
+import edu.sfsu.csc780.pictachio.activities.DetailActivity;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VideosFragment extends Fragment {
+public class AllPhotosFragment extends Fragment {
 
     ArrayList<String> imageList = new ArrayList<>();
     ContentAdapter adapter = new ContentAdapter();
 
-    public VideosFragment() {
+    public AllPhotosFragment() {
         // Required empty public constructor
     }
 
@@ -77,7 +82,7 @@ public class VideosFragment extends Fragment {
                     && mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
                 continue;
             loaded++;
-            if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+            if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
                 String path = cursor.getString(
                         cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
                 imagePaths.add(path);
@@ -117,6 +122,16 @@ public class VideosFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
+
+            File imageFile = new File(imageList.get(position));
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), bmOptions);
+            bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    bitmap.getWidth(), bitmap.getHeight());
+            holder.setIv(layoutParams);
+
             Ion.with(holder.getIv())
                     .centerCrop()
                     .placeholder(R.drawable.placeholder)
