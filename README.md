@@ -2,7 +2,7 @@
 
 ### About
 
-A gallery app for viewing media (photos and video) on your android device.
+A gallery app for viewing media (photos and videos) on your android device.
 
 ### Features at a glance
 
@@ -16,7 +16,7 @@ A gallery app for viewing media (photos and video) on your android device.
 
 ### Known issues
 
-* Returning from the camera after taking a photo doesn't always load the new image. There needs to be a delay until I can reload the images from the database.
+* Returning from the camera after taking a photo doesn't always load the new image. There needs to be a delay until it can reload the images from the database.
 
 #### Contributors:
 
