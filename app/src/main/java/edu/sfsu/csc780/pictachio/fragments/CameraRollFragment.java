@@ -5,8 +5,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -102,16 +100,6 @@ public class CameraRollFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-
-            File imageFile = new File(imageList.get(position));
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), bmOptions);
-            bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
-
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    bitmap.getWidth(), bitmap.getHeight());
-            holder.setIv(layoutParams);
-
             Ion.with(holder.getIv())
                     .centerCrop()
                     .placeholder(R.drawable.placeholder)
@@ -172,14 +160,12 @@ public class CameraRollFragment extends Fragment {
                     new String[]{"%DCIM/Camera%"},
                     null);
 
-            int loaded = 0;
-            while ((cursor != null && cursor.moveToNext()) && loaded < 10) {
+            while ((cursor != null && cursor.moveToNext())) {
                 int mediaType = cursor.getInt(cursor.getColumnIndex(
                         MediaStore.Files.FileColumns.MEDIA_TYPE));
                 if (mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
                         && mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
                     continue;
-                loaded++;
                 if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
                     String path = cursor.getString(
                             cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));

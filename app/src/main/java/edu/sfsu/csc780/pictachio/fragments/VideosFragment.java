@@ -157,14 +157,12 @@ public class VideosFragment extends Fragment {
 
             cursor = getActivity().getContentResolver().query(queryUri, null, null, null, null);
 
-            int loaded = 0;
-            while ((cursor != null && cursor.moveToNext()) && loaded < 10) {
+            while ((cursor != null && cursor.moveToNext())) {
                 int mediaType = cursor.getInt(cursor.getColumnIndex(
                         MediaStore.Files.FileColumns.MEDIA_TYPE));
                 if (mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
                         && mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
                     continue;
-                loaded++;
                 if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
                     String path = cursor.getString(
                             cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
