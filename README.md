@@ -4,6 +4,10 @@
 
 A gallery app for viewing media (photos and videos) on your android device.
 
+### Target installation versions
+
+Android Kitkat 4.4 through Lollipop 5.0
+
 ### Features at a glance
 
 * Loads images and videos stored in local SD card
