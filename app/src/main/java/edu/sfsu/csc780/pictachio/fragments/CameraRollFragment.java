@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.koushikdutta.ion.Ion;
 
@@ -126,10 +125,6 @@ public class CameraRollFragment extends Fragment {
 
             public ImageView getIv() {
                 return iv;
-            }
-
-            public void setIv(RelativeLayout.LayoutParams layoutParams) {
-                iv.setLayoutParams(layoutParams);
             }
 
             @Override

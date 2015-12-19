@@ -127,12 +127,6 @@ public class VideosFragment extends Fragment {
                 return iv;
             }
 
-// --Commented out by Inspection START (12/18/15, 6:33 PM):
-//            public void setIv(RelativeLayout.LayoutParams layoutParams) {
-//                iv.setLayoutParams(layoutParams);
-//            }
-// --Commented out by Inspection STOP (12/18/15, 6:33 PM)
-
             @Override
             public void onClick(View v) {
                 int position = getLayoutPosition();
