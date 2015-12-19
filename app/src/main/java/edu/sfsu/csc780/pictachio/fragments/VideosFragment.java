@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
@@ -40,13 +41,19 @@ public class VideosFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        imageList = loadImages();
+        updateAdapter();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         updateAdapter();
+    }
+
+    @Override
+    public void onDestroy() {
+        imageList = null;
+        super.onDestroy();
     }
 
     @Override
@@ -65,39 +72,12 @@ public class VideosFragment extends Fragment {
         return recyclerView;
     }
 
-    private ArrayList<String> loadImages() {
-        Cursor cursor;
-        ArrayList<String> imagePaths = new ArrayList<>();
-        Uri queryUri = MediaStore.Files.getContentUri("external");
-
-        cursor = getActivity().getContentResolver().query(queryUri, null, null, null, null);
-
-        int loaded = 0;
-        while ((cursor != null && cursor.moveToNext()) && loaded < 10) {
-            int mediaType = cursor.getInt(cursor.getColumnIndex(
-                    MediaStore.Files.FileColumns.MEDIA_TYPE));
-            if (mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
-                    && mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
-                continue;
-            loaded++;
-            if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-                String path = cursor.getString(
-                        cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
-                imagePaths.add(path);
-            }
-        }
-        if (cursor != null)
-            cursor.close();
-
-        return imagePaths;
-    }
-
     /**
      * Method to update the RecyclerView adapter
      */
+    @SuppressWarnings("unchecked")
     public void updateAdapter() {
-        imageList = loadImages();
-        adapter.notifyDataSetChanged();
+        new LoadImages().execute(imageList);
     }
 
     /**
@@ -163,7 +143,43 @@ public class VideosFragment extends Fragment {
                 context.startActivity(intent);
             }
         }
+    }
 
+    private class LoadImages extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
 
+        @SafeVarargs
+        @Override
+        protected final ArrayList<String> doInBackground(ArrayList<String>... params) {
+            Cursor cursor;
+            ArrayList<String> imagePaths = new ArrayList<>();
+            Uri queryUri = MediaStore.Files.getContentUri("external");
+
+            cursor = getActivity().getContentResolver().query(queryUri, null, null, null, null);
+
+            int loaded = 0;
+            while ((cursor != null && cursor.moveToNext()) && loaded < 10) {
+                int mediaType = cursor.getInt(cursor.getColumnIndex(
+                        MediaStore.Files.FileColumns.MEDIA_TYPE));
+                if (mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
+                        && mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
+                    continue;
+                loaded++;
+                if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+                    String path = cursor.getString(
+                            cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+                    imagePaths.add(path);
+                }
+            }
+            if (cursor != null)
+                cursor.close();
+
+            return imagePaths;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            imageList = strings;
+            adapter.notifyDataSetChanged();
+        }
     }
 }
