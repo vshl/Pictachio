@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.koushikdutta.ion.Ion;
 
@@ -31,8 +30,8 @@ import edu.sfsu.csc780.pictachio.activities.DetailActivity;
  */
 public class VideosFragment extends Fragment {
 
-    ArrayList<String> imageList = new ArrayList<>();
-    ContentAdapter adapter = new ContentAdapter();
+    private final ContentAdapter adapter = new ContentAdapter();
+    private ArrayList<String> imageList = new ArrayList<>();
 
     public VideosFragment() {
         // Required empty public constructor
@@ -76,7 +75,7 @@ public class VideosFragment extends Fragment {
      * Method to update the RecyclerView adapter
      */
     @SuppressWarnings("unchecked")
-    public void updateAdapter() {
+    private void updateAdapter() {
         new LoadImages().execute(imageList);
     }
 
@@ -113,8 +112,8 @@ public class VideosFragment extends Fragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            private ImageView iv;
-            private Context context;
+            private final ImageView iv;
+            private final Context context;
 
             public ViewHolder(Context context, View itemView) {
                 super(itemView);
@@ -128,9 +127,11 @@ public class VideosFragment extends Fragment {
                 return iv;
             }
 
-            public void setIv(RelativeLayout.LayoutParams layoutParams) {
-                iv.setLayoutParams(layoutParams);
-            }
+// --Commented out by Inspection START (12/18/15, 6:33 PM):
+//            public void setIv(RelativeLayout.LayoutParams layoutParams) {
+//                iv.setLayoutParams(layoutParams);
+//            }
+// --Commented out by Inspection STOP (12/18/15, 6:33 PM)
 
             @Override
             public void onClick(View v) {

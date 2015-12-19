@@ -33,8 +33,8 @@ import edu.sfsu.csc780.pictachio.activities.DetailActivity;
  */
 public class CameraRollFragment extends Fragment {
 
-    ArrayList<String> imageList = new ArrayList<>();
-    ContentAdapter adapter = new ContentAdapter();
+    private final ContentAdapter adapter = new ContentAdapter();
+    private ArrayList<String> imageList = new ArrayList<>();
 
     public CameraRollFragment() {
         // Required empty public constructor
@@ -125,8 +125,8 @@ public class CameraRollFragment extends Fragment {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            private ImageView iv;
-            private Context context;
+            private final ImageView iv;
+            private final Context context;
 
             public ViewHolder(Context context, View itemView) {
                 super(itemView);

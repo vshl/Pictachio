@@ -35,11 +35,11 @@ import edu.sfsu.csc780.pictachio.fragments.VideosFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    static final int REQUEST_IMAGE_CAPTURE = 1881;
+    private static final int REQUEST_IMAGE_CAPTURE = 1881;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private String mCurrentPhotoPath;
-    Button.OnClickListener mTakePhotoOnClickListener =
+    private final Button.OnClickListener mTakePhotoOnClickListener =
             new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
      * @return True if an Intent with the specified action can be sent and
      * responded to, false otherwise.
      */
-    public static boolean isIntentAvailable(Context context, String action) {
+    private static boolean isIntentAvailable(Context context, String action) {
         final PackageManager packageManager = context.getPackageManager();
         final Intent intent = new Intent(action);
         List<ResolveInfo> list =
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void selectDrawerItem(MenuItem menuItem) {
+    private void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
         Class fragmentClass;
 
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         sendBroadcast(mediaScanIntent);
     }
 
-    public void handleCameraPhoto() {
+    private void handleCameraPhoto() {
         if (mCurrentPhotoPath != null) {
             galleryAddPic();
             mCurrentPhotoPath = null;
