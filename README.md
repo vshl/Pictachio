@@ -1,13 +1,23 @@
-# Pictachio - An Android project for class CSC 780, SFSU
+## Pictachio - An Android project for class CSC 780, SFSU
 
-## About
+### About
 
 A gallery app for viewing media (photos and video) on your android device.
 
-## Wiki
+### Features at a glance
+
+* Loads images and videos stored in local SD card
+* Launch camera from within app
+* Images support DeepZoom with pinch-to-zoom gesture
+
+### Wiki
 
 [Journal](https://github.com/vshl/Pictachio/wiki/Journal)
 
-### Contributors:
+### Known issues
+
+* Returning from the camera after taking a photo doesn't always load the new image. There needs to be a delay until I can reload the images from the database.
+
+#### Contributors:
 
 Vishal Ravishankar
