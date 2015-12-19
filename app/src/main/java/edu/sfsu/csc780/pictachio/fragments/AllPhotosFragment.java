@@ -96,7 +96,7 @@ public class AllPhotosFragment extends Fragment {
             Context context = parent.getContext();
             View itemView = LayoutInflater
                     .from(context)
-                    .inflate(R.layout.fragment_camera_roll, parent, false);
+                    .inflate(R.layout.fragment_recycler_grid, parent, false);
             return new ViewHolder(context, itemView);
         }
 
