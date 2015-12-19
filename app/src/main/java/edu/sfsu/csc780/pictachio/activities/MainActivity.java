@@ -164,10 +164,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             handleCameraPhoto();
-            CameraRollFragment cameraRollFragment = (CameraRollFragment)
-                    getFragmentManager().findFragmentById(R.id.fragment_container);
-            if (cameraRollFragment != null)
-                cameraRollFragment.updateAdapter();
         }
     }
 
