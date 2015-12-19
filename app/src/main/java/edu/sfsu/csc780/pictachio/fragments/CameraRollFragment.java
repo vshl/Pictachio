@@ -140,6 +140,9 @@ public class CameraRollFragment extends Fragment {
         }
     }
 
+    /**
+     * Method to create a background task for the image loading
+     */
     private class LoadImages extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
 
         @SafeVarargs

@@ -33,6 +33,9 @@ import edu.sfsu.csc780.pictachio.fragments.AllPhotosFragment;
 import edu.sfsu.csc780.pictachio.fragments.CameraRollFragment;
 import edu.sfsu.csc780.pictachio.fragments.VideosFragment;
 
+/**
+ * Main Activity
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1881;
@@ -200,6 +203,12 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
     }
 
+    /**
+     * Creates the image file for the captured photo
+     *
+     * @return Image file
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
@@ -219,6 +228,9 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
+    /**
+     * Calls intent to the camera
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure there is a camera activity to handle the intent
@@ -241,6 +253,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Adds the image to the SD Card to be available on the device
+     */
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(mCurrentPhotoPath);

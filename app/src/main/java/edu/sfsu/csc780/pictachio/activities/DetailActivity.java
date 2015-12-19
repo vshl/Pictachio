@@ -11,6 +11,9 @@ import com.koushikdutta.ion.Ion;
 import edu.sfsu.csc780.pictachio.R;
 import uk.co.senab.photoview.PhotoView;
 
+/**
+ * Activity to show individual media
+ */
 public class DetailActivity extends Activity {
 
     @Override
