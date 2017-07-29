@@ -1,4 +1,4 @@
-package edu.sfsu.csc780.pictachio.utils;
+package me.vshl.apps.pictachio.utils;
 
 import android.content.Context;
 import android.util.AttributeSet;

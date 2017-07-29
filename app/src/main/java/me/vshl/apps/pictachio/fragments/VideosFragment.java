@@ -1,4 +1,4 @@
-package edu.sfsu.csc780.pictachio.fragments;
+package me.vshl.apps.pictachio.fragments;
 
 
 import android.app.Fragment;
@@ -21,8 +21,8 @@ import com.koushikdutta.ion.Ion;
 import java.io.File;
 import java.util.ArrayList;
 
-import edu.sfsu.csc780.pictachio.R;
-import edu.sfsu.csc780.pictachio.activities.DetailActivity;
+import me.vshl.apps.pictachio.R;
+import me.vshl.apps.pictachio.activities.DetailActivity;
 
 
 /**

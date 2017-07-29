@@ -1,4 +1,4 @@
-package edu.sfsu.csc780.pictachio.fragments;
+package me.vshl.apps.pictachio.fragments;
 
 
 import android.app.Fragment;
@@ -21,19 +21,19 @@ import com.koushikdutta.ion.Ion;
 import java.io.File;
 import java.util.ArrayList;
 
-import edu.sfsu.csc780.pictachio.R;
-import edu.sfsu.csc780.pictachio.activities.DetailActivity;
+import me.vshl.apps.pictachio.R;
+import me.vshl.apps.pictachio.activities.DetailActivity;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CameraRollFragment extends Fragment {
+public class AllPhotosFragment extends Fragment {
 
     private final ContentAdapter adapter = new ContentAdapter();
     private ArrayList<String> imageList = new ArrayList<>();
 
-    public CameraRollFragment() {
+    public AllPhotosFragment() {
         // Required empty public constructor
     }
 
@@ -75,7 +75,7 @@ public class CameraRollFragment extends Fragment {
      * Method to update the RecyclerView adapter
      */
     @SuppressWarnings("unchecked")
-    public void updateAdapter() {
+    private void updateAdapter() {
         new LoadImages().execute(imageList);
     }
 
@@ -152,11 +152,7 @@ public class CameraRollFragment extends Fragment {
             ArrayList<String> imagePaths = new ArrayList<>();
             Uri queryUri = MediaStore.Files.getContentUri("external");
 
-            cursor = getActivity().getContentResolver().query(queryUri,
-                    null,
-                    MediaStore.Images.Media.DATA + " like ? ",
-                    new String[]{"%DCIM/Camera%"},
-                    null);
+            cursor = getActivity().getContentResolver().query(queryUri, null, null, null, null);
 
             while ((cursor != null && cursor.moveToNext())) {
                 int mediaType = cursor.getInt(cursor.getColumnIndex(

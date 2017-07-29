@@ -1,4 +1,4 @@
-package edu.sfsu.csc780.pictachio;
+package me.vshl.apps.pictachio;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,4 +1,4 @@
-package edu.sfsu.csc780.pictachio.activities;
+package me.vshl.apps.pictachio.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -28,10 +28,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import edu.sfsu.csc780.pictachio.R;
-import edu.sfsu.csc780.pictachio.fragments.AllPhotosFragment;
-import edu.sfsu.csc780.pictachio.fragments.CameraRollFragment;
-import edu.sfsu.csc780.pictachio.fragments.VideosFragment;
+import me.vshl.apps.pictachio.R;
+import me.vshl.apps.pictachio.fragments.AllPhotosFragment;
+import me.vshl.apps.pictachio.fragments.CameraRollFragment;
+import me.vshl.apps.pictachio.fragments.VideosFragment;
 
 /**
  * Main Activity

@@ -6,7 +6,7 @@
     android:padding="@dimen/tile_padding"
                 tools:context=".fragments.CameraRollFragment">
 
-    <edu.sfsu.csc780.pictachio.utils.SquaredImageView
+    <me.vshl.apps.pictachio.utils.SquaredImageView
         android:id="@+id/imageTile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tile_height"
