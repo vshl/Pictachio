@@ -10,4 +10,8 @@
     <string name="videos">Videos</string>
 
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="permission_read_external_storage_rationale">Read External Storage permission is needed to show the images</string>
+    <string name="ok">OK</string>
+    <string name="permission_available_read_external_storage">Read External Storage permission granted</string>
+    <string name="permission_not_granted">Permission not granted</string>
 </resources>
