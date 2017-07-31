@@ -25,6 +25,7 @@ import com.koushikdutta.ion.Ion;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import me.vshl.apps.pictachio.R;
 import me.vshl.apps.pictachio.activities.DetailActivity;
@@ -222,12 +223,14 @@ public class CameraRollFragment extends Fragment {
             if (cursor != null)
                 cursor.close();
 
+            Collections.sort(imagePaths, Collections.<String>reverseOrder());
             return imagePaths;
         }
 
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
-            imageList = strings;
+            imageList.clear();
+            imageList.addAll(strings);
             adapter.notifyDataSetChanged();
         }
     }
