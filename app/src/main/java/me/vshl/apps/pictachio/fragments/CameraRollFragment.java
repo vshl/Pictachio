@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -87,9 +88,9 @@ public class CameraRollFragment extends Fragment {
     /**
      * Method to update the RecyclerView adapter
      */
-    @SuppressWarnings("unchecked")
     public void updateAdapter() {
-        new LoadImages().execute(imageList);
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(loadImages, 1000);
     }
 
     private void requestReadExternalStoragePermission() {
@@ -193,45 +194,53 @@ public class CameraRollFragment extends Fragment {
     /**
      * Method to create a background task for the image loading
      */
-    private class LoadImages extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
 
-        @SafeVarargs
+    private Runnable loadImages = new Runnable() {
+        @SuppressWarnings("unchecked")
         @Override
-        protected final ArrayList<String> doInBackground(ArrayList<String>... params) {
-            Cursor cursor;
-            ArrayList<String> imagePaths = new ArrayList<>();
-            Uri queryUri = MediaStore.Files.getContentUri("external");
+        public void run() {
+            new AsyncTask<ArrayList<String>, Void, ArrayList<String>>() {
+                @Override
+                protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+                    Cursor cursor;
+                    ArrayList<String> imagePaths = new ArrayList<>();
+                    Uri queryUri = MediaStore.Files.getContentUri("external");
 
-            cursor = getActivity().getContentResolver().query(queryUri,
-                    null,
-                    MediaStore.Images.Media.DATA + " like ? ",
-                    new String[]{"%DCIM/Camera%"},
-                    null);
+                    cursor = getActivity().getContentResolver().query(queryUri,
+                            null,
+                            MediaStore.Images.Media.DATA + " like ? ",
+                            new String[]{"%DCIM/Camera%"},
+                            null);
 
-            while ((cursor != null && cursor.moveToNext())) {
-                int mediaType = cursor.getInt(cursor.getColumnIndex(
-                        MediaStore.Files.FileColumns.MEDIA_TYPE));
-                if (mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
-                        && mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
-                    continue;
-                if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
-                    String path = cursor.getString(
-                            cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
-                    imagePaths.add(path);
+                    while ((cursor != null && cursor.moveToNext())) {
+                        int mediaType = cursor.getInt(cursor.getColumnIndex(
+                                MediaStore.Files.FileColumns.MEDIA_TYPE));
+                        if (mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
+                                && mediaType != MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
+                            continue;
+                        if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
+                            String path = cursor.getString(
+                                    cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+                            imagePaths.add(path);
+                        }
+                    }
+                    if (cursor != null)
+                        cursor.close();
+
+                    Collections.sort(imagePaths, Collections.<String>reverseOrder());
+                    return imagePaths;
                 }
-            }
-            if (cursor != null)
-                cursor.close();
 
-            Collections.sort(imagePaths, Collections.<String>reverseOrder());
-            return imagePaths;
+                @Override
+                protected void onPostExecute(ArrayList<String> strings) {
+                    super.onPostExecute(strings);
+                    if (strings != null) {
+                        imageList.clear();
+                        imageList.addAll(strings);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }.execute();
         }
-
-        @Override
-        protected void onPostExecute(ArrayList<String> strings) {
-            imageList.clear();
-            imageList.addAll(strings);
-            adapter.notifyDataSetChanged();
-        }
-    }
+    };
 }
